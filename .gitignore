@@ -1,0 +1,19 @@
+# Ignore virtual environment
+myenv/
+
+# Ignore model checkpoint folder
+peft-snowboard-llm-checkpoint-local/
+
+#additional things to ignore for react
+#REMOVE AS NEEDED
+node_modules/
+
+.DS_Store
+Thumbs.db
+
+build/
+
+.idea/
+*.log
+*.swp
+*.swo
