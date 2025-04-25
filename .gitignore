@@ -2,7 +2,7 @@
 myenv/
 
 # Ignore model checkpoint folder
-peft-snowboard-llm-checkpoint-local/
+backend/peft-snowboard-llm-checkpoint-local/
 
 #additional things to ignore for react
 #REMOVE AS NEEDED
