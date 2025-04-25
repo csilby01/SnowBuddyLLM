@@ -1,25 +1,4 @@
-// import { useState } from 'react'
-// import snowLogo from '/sblogonbg.png'
-// import './App.css'
 
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <img src={snowLogo} className="logo" alt="SnowBuddy logo"  />
-//       </div>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is not {count - 1}
-//         </button>
-//       </div>
-//     </>
-//   )
-// }
-
-// export default App
 
 // App.tsx
 import AppName from './components/AppName';
@@ -27,7 +6,7 @@ import Chat from './components/Chat';
 import Headings from './components/Headings';
 import SearchBar from './components/SearchBar';
 import Button from './components/Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import snowLogo from '/sblogonbg.png'
 import './App.css'
 
@@ -46,11 +25,30 @@ const App = () => {
   };
 
   // Function to handle button click
-  const handleSend = () => {
+  const handleSend = async () => {
     if (inputValue.trim() === '') return;
-    // Add the input value to the chat messages
-    setChatMessages([...chatMessages, inputValue]);
-    // Clear the input field
+
+    const userMessage = `You: ${inputValue}`;
+    const newMessages = [...chatMessages, userMessage];
+    setChatMessages(newMessages);
+
+    try {
+      const response = await fetch('http://localhost:5000/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: inputValue }),
+      });
+
+      const data = await response.json();
+      const botReply = `Bot: ${data.reply}`;
+      setChatMessages([...newMessages, botReply]);
+    } catch (error) {
+      console.error('Error:', error);
+      setChatMessages([...newMessages, 'Bot: Sorry, something went wrong.']);
+    }
+
     setInputValue('');
   };
   return (
