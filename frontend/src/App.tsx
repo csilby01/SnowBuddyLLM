@@ -11,10 +11,7 @@ import snowLogo from '/sblogonbg.png'
 import './App.css'
 
 const App = () => {
-  // const handleSearch = () => {
-  //   alert('Search button clicked!');
-  // };
-  // State to manage the input value
+
   const [inputValue, setInputValue] = useState('');
   // State to manage chat messages
   const [chatMessages, setChatMessages] = useState<string[]>([]);
@@ -65,11 +62,11 @@ const App = () => {
           </div>
         </Headings>
       </div>
-      <div className="chat-container">
+      <div>
        <Chat>
           {/* Render chat messages */}
           {chatMessages.map((message, index) => (
-            <div key={index} className="chat-message">
+            <div key={index} className={`chat-${index % 2}`}>
               {message}
             </div>
           ))}
