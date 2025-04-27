@@ -16,6 +16,9 @@ const App = () => {
   // State to manage chat messages
   const [chatMessages, setChatMessages] = useState<string[]>([]);
 
+  //Ensure no messages are sent while awaiting response from Chatbot
+  const [isSending, setIsSending] = useState(false);
+
   // Function to handle input change
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
@@ -29,6 +32,9 @@ const App = () => {
     const newMessages = [...chatMessages, userMessage];
     setChatMessages(newMessages);
 
+
+    setIsSending(true);
+
     try {
       const response = await fetch('http://localhost:5000/chat', {
         method: 'POST',
@@ -39,7 +45,7 @@ const App = () => {
       });
 
       const data = await response.json();
-      const botReply = `Bot: ${data.reply}`;
+      const botReply = `SnowBuddy: ${data.reply}`;
       setChatMessages([...newMessages, botReply]);
     } catch (error) {
       console.error('Error:', error);
@@ -47,6 +53,7 @@ const App = () => {
     }
 
     setInputValue('');
+    setIsSending(false);
   };
   return (
     <>
@@ -66,7 +73,7 @@ const App = () => {
        <Chat>
           {/* Render chat messages */}
           {chatMessages.map((message, index) => (
-            <div key={index} className={`chat-${index % 2}`}>
+            <div key={index} className = {`chat-${index % 2}`}>
               {message}
             </div>
           ))}
@@ -80,7 +87,7 @@ const App = () => {
             value={inputValue}
             onChange={handleInputChange}
           />
-          <Button textContent="Send" handleClick={handleSend} />
+          <Button textContent="Send" handleClick={handleSend} disabled={isSending} />
         </SearchBar>
       </div>
     </>
